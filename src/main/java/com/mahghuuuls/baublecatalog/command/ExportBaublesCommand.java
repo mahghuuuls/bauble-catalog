@@ -57,8 +57,12 @@ public class ExportBaublesCommand extends CommandBase {
 
     private String successMessage(ExportResult result) {
         File outputFile = result.getOutputFile();
-        return Tags.MOD_NAME + " export complete: wrote " + result.getRowCount()
+        String message = Tags.MOD_NAME + " export complete: wrote " + result.getRowCount()
                 + " rows to " + outputFile.getAbsolutePath();
+        if (result.getProblemRowCount() > 0) {
+            message = message + " Skipped " + result.getProblemRowCount() + " problem variants.";
+        }
+        return message;
     }
 
     private String failureMessage(ExportResult result) {

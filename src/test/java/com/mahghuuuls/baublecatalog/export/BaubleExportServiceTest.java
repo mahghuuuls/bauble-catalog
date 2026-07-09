@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BaubleExportServiceTest {
@@ -40,5 +41,22 @@ class BaubleExportServiceTest {
                         + "creative_tab,max_stack_size,max_durability,ore_dictionary_names\r\n",
                 contents
         );
+    }
+
+    @Test
+    void reportsFailureWhenOutputDirectoryPathIsAFile() throws Exception {
+        File blockedDirectoryPath = new File(configDirectory, "baublecatalog");
+        Files.write(blockedDirectoryPath.toPath(), "not a directory".getBytes(StandardCharsets.UTF_8));
+        BaubleExportService service = new BaubleExportService();
+
+        ExportResult result = service.exportHeadersOnly(
+                configDirectory,
+                LocalDateTime.of(2026, 7, 8, 17, 5, 6)
+        );
+
+        assertFalse(result.isSuccess());
+        assertEquals(0, result.getRowCount());
+        assertTrue(result.getMessage().contains("Could not write"));
+        assertTrue(result.getError() instanceof java.io.IOException);
     }
 }

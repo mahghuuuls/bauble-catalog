@@ -74,9 +74,9 @@ public class BaubleExportService {
 
         try {
             ensureOutputDirectory(outputDirectory);
-            List<Iterable<String>> rows = buildRows();
-            csvWriter.write(outputFile, CsvSchema.headers(), rows);
-            return ExportResult.success(outputFile, rows.size());
+            ExportRows rows = buildRows();
+            csvWriter.write(outputFile, CsvSchema.headers(), rows.getRows());
+            return ExportResult.success(outputFile, rows.getRows().size(), rows.getProblemRowCount());
         } catch (IOException e) {
             BaubleCatalogMod.LOGGER.error("Failed to write Bauble Catalog export to {}", outputFile, e);
             return ExportResult.failure(outputFile, "Could not write " + outputFile.getAbsolutePath(), e);
@@ -111,8 +111,9 @@ public class BaubleExportService {
         }
     }
 
-    private List<Iterable<String>> buildRows() {
+    private ExportRows buildRows() {
         List<Iterable<String>> rows = new ArrayList<Iterable<String>>();
+        int problemRowCount = 0;
         List<DiscoveredVariant> variants = itemVariantDiscoverer.discover();
         for (DiscoveredVariant variant : variants) {
             try {
@@ -129,9 +130,10 @@ public class BaubleExportService {
                         variant.describe(),
                         e
                 );
+                problemRowCount++;
             }
         }
-        return rows;
+        return new ExportRows(rows, problemRowCount);
     }
 
     private void ensureOutputDirectory(File outputDirectory) throws IOException {
@@ -144,6 +146,25 @@ public class BaubleExportService {
 
         if (!outputDirectory.mkdirs() && !outputDirectory.isDirectory()) {
             throw new IOException("Could not create output directory " + outputDirectory.getAbsolutePath());
+        }
+    }
+
+    private static final class ExportRows {
+
+        private final List<Iterable<String>> rows;
+        private final int problemRowCount;
+
+        private ExportRows(List<Iterable<String>> rows, int problemRowCount) {
+            this.rows = rows;
+            this.problemRowCount = problemRowCount;
+        }
+
+        private List<Iterable<String>> getRows() {
+            return rows;
+        }
+
+        private int getProblemRowCount() {
+            return problemRowCount;
         }
     }
 }
