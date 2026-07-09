@@ -6,12 +6,9 @@ import baubles.api.IBaubleType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public final class BubblesBaubleClassifier {
+public class BubblesBaubleClassifier {
 
-    private BubblesBaubleClassifier() {
-    }
-
-    public static ResourceLocation getBaubleTypeId(ItemStack stack) {
+    public ResourceLocation getBaubleTypeId(ItemStack stack) {
         if (stack == null || stack.isEmpty()) {
             return null;
         }

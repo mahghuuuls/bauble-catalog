@@ -46,7 +46,7 @@ public class ExportBaublesCommand extends CommandBase {
             throw new WrongUsageException(getUsage(sender));
         }
 
-        ExportResult result = exportService.exportHeadersOnly(BaubleCatalogMod.getConfigDirectory());
+        ExportResult result = exportService.export(BaubleCatalogMod.getConfigDirectory());
         if (result.isSuccess()) {
             sender.sendMessage(new TextComponentString(successMessage(result)));
             return;
