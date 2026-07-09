@@ -23,12 +23,13 @@ class CsvWriterTest {
 
         writer.write(
                 outputFile,
-                Arrays.asList("plain", "comma", "quote", "newline", "empty"),
+                Arrays.asList("plain", "comma", "quote", "newline", "carriage", "empty"),
                 Collections.singletonList(Arrays.asList(
                         "value",
                         "amulet, ring",
                         "marked \"rare\"",
                         "line one\nline two",
+                        "carriage\rreturn",
                         null
                 ))
         );
@@ -36,8 +37,8 @@ class CsvWriterTest {
         String contents = new String(Files.readAllBytes(outputFile.toPath()), StandardCharsets.UTF_8);
 
         assertEquals(
-                "plain,comma,quote,newline,empty\r\n"
-                        + "value,\"amulet, ring\",\"marked \"\"rare\"\"\",\"line one\nline two\",\r\n",
+                "plain,comma,quote,newline,carriage,empty\r\n"
+                        + "value,\"amulet, ring\",\"marked \"\"rare\"\"\",\"line one\nline two\",\"carriage\rreturn\",\r\n",
                 contents
         );
     }

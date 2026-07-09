@@ -15,7 +15,15 @@ class BaubleExportRowTest {
                 "3",
                 "Example Ring",
                 "examplemod",
-                "baubles:ring"
+                "baubles:ring",
+                "Example Mod",
+                "Ring",
+                "Rare",
+                "Example Ring\nA useful bauble",
+                "misc",
+                "1",
+                "0",
+                "oreRingExample;oreBaubleExample"
         );
 
         assertEquals(
@@ -25,14 +33,14 @@ class BaubleExportRowTest {
                         "Example Ring",
                         "examplemod",
                         "baubles:ring",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        ""
+                        "Example Mod",
+                        "Ring",
+                        "Rare",
+                        "Example Ring\nA useful bauble",
+                        "misc",
+                        "1",
+                        "0",
+                        "oreRingExample;oreBaubleExample"
                 ),
                 row.toCsvFields()
         );

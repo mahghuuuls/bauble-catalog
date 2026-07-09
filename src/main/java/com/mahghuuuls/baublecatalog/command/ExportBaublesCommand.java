@@ -21,7 +21,7 @@ public class ExportBaublesCommand extends CommandBase {
         this(new BaubleExportService());
     }
 
-    ExportBaublesCommand(BaubleExportService exportService) {
+    public ExportBaublesCommand(BaubleExportService exportService) {
         this.exportService = exportService;
     }
 

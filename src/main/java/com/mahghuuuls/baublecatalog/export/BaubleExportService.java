@@ -1,6 +1,7 @@
 package com.mahghuuuls.baublecatalog.export;
 
 import com.mahghuuuls.baublecatalog.BaubleCatalogMod;
+import com.mahghuuuls.baublecatalog.bubbles.BaubleClassification;
 import com.mahghuuuls.baublecatalog.bubbles.BubblesBaubleClassifier;
 import com.mahghuuuls.baublecatalog.csv.CsvSchema;
 import com.mahghuuuls.baublecatalog.csv.CsvWriter;
@@ -9,7 +10,6 @@ import com.mahghuuuls.baublecatalog.discover.ItemVariantDiscoverer;
 import com.mahghuuuls.baublecatalog.io.ExportOutputPaths;
 import com.mahghuuuls.baublecatalog.metadata.BaubleExportRow;
 import com.mahghuuuls.baublecatalog.metadata.BaubleMetadataReader;
-import net.minecraft.util.ResourceLocation;
 
 import java.io.File;
 import java.io.IOException;
@@ -116,12 +116,12 @@ public class BaubleExportService {
         List<DiscoveredVariant> variants = itemVariantDiscoverer.discover();
         for (DiscoveredVariant variant : variants) {
             try {
-                ResourceLocation baubleTypeId = baubleClassifier.getBaubleTypeId(variant.getStack());
-                if (baubleTypeId == null) {
+                BaubleClassification classification = baubleClassifier.classify(variant.getStack());
+                if (classification == null) {
                     continue;
                 }
 
-                BaubleExportRow row = metadataReader.readRequiredRow(variant, baubleTypeId);
+                BaubleExportRow row = metadataReader.readRow(variant, classification);
                 rows.add(row.toCsvFields());
             } catch (RuntimeException e) {
                 BaubleCatalogMod.LOGGER.warn(
