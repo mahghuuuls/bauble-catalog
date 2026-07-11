@@ -2,6 +2,8 @@
 
 Helps pack authors see which Baubles are available in a Bubbles-based modpack by generating a CSV file with information about the Baubles the modpack contains.
 
+<p style="color: #d6a100;"><strong>AI usage disclaimer:</strong> This mod was developed with AI-agent assistance. I reviewed the work step by step during development and test releases in my personal Cleanroom modpack with 300+ mods.</p>
+
 I tested the mod with Bubbles, not with original Baubles or BaublesEX, so it might not work with those.
 
 ## Features
